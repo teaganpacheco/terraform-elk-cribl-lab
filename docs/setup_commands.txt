@@ -16,3 +16,11 @@ git --version
 aws sts get-caller-identity --profile terraform-lab
 jq --version
 tree --version
+
+
+B has to be the right answer. If "new search head in the cluster" means a dedicated MC registered as an indexer-cluster search head
+
+An indexer cluster is obviously a distributed deployment, so the MC should be configured in distributed mode. Splunk's distributed MC setup explicitly tells you to select:
+
+Monitoring Console → Settings → General Setup → Distributed mode. A dedicated MC can be a standalone search head attached to an indexer cluster without being an SHC member. 
+https://help.splunk.com/en/splunk-enterprise/administer/monitor/10.4/configure-the-monitoring-console/which-instance-should-host-the-console
