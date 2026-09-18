@@ -39,3 +39,15 @@ variable "private_subnet_cidr" {
   type        = string
   default     = "10.10.20.0/24"
 }
+
+variable "nat_instance_type" {
+  description = "EC2 instance type used by the NAT/egress instance."
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "nat_private_ip" {
+  description = "Static private IPv4 address assigned to the NAT/egress instance."
+  type        = string
+  default     = "10.10.10.10"
+}

@@ -1,0 +1,96 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+# -----------------------------------------------------------------------------
+# Install persistent iptables support.
+#
+# Retry to tolerate the small window between EC2 startup and full Internet
+# connectivity/EIP association.
+# -----------------------------------------------------------------------------
+
+for attempt in $(seq 1 30); do
+    if dnf install -y iptables-services; then
+        break
+    fi
+
+    echo "iptables-services installation attempt $attempt failed. Retrying..."
+    sleep 10
+done
+
+rpm -q iptables-services
+
+
+# -----------------------------------------------------------------------------
+# Enable IPv4 forwarding persistently.
+# -----------------------------------------------------------------------------
+
+cat > /etc/sysctl.d/99-nat-instance.conf <<'EOF'
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+
+
+# -----------------------------------------------------------------------------
+# Determine the primary network interface dynamically.
+#
+# Depending on instance/AMI configuration this may be eth0, ens5, etc.
+# -----------------------------------------------------------------------------
+
+PRIMARY_INTERFACE="$(ip route show default | awk '/default/ {print $5; exit}')"
+
+test -n "$PRIMARY_INTERFACE"
+
+
+# -----------------------------------------------------------------------------
+# Configure Network Address Translation.
+# -----------------------------------------------------------------------------
+
+iptables -t nat -F POSTROUTING
+
+iptables -t nat -A POSTROUTING \
+    -s ${private_subnet_cidr} \
+    -o "$PRIMARY_INTERFACE" \
+    -j MASQUERADE
+
+
+# -----------------------------------------------------------------------------
+# Configure forwarding.
+# -----------------------------------------------------------------------------
+
+iptables -F FORWARD
+iptables -P FORWARD DROP
+
+# Permit traffic originating from the private workload subnet.
+iptables -A FORWARD \
+    -s ${private_subnet_cidr} \
+    -m conntrack \
+    --ctstate NEW,ESTABLISHED,RELATED \
+    -j ACCEPT
+
+# Permit return traffic back to the private workload subnet.
+iptables -A FORWARD \
+    -d ${private_subnet_cidr} \
+    -m conntrack \
+    --ctstate ESTABLISHED,RELATED \
+    -j ACCEPT
+
+
+# -----------------------------------------------------------------------------
+# Persist firewall/NAT rules across reboot.
+# -----------------------------------------------------------------------------
+
+service iptables save
+
+systemctl enable iptables
+systemctl restart iptables
+
+
+# -----------------------------------------------------------------------------
+# Ensure Systems Manager Agent is available.
+# AL2023 normally ships with SSM Agent preinstalled.
+# -----------------------------------------------------------------------------
+
+systemctl enable amazon-ssm-agent || true
+systemctl restart amazon-ssm-agent || true
