@@ -75,3 +75,32 @@ output "ec2_ssm_instance_profile" {
   description = "Reusable EC2 instance profile providing Systems Manager access."
   value       = aws_iam_instance_profile.ec2_ssm.name
 }
+
+# -----------------------------------------------------------------------------
+# Linux Endpoint Outputs
+# -----------------------------------------------------------------------------
+
+output "linux_endpoint_instance_id" {
+  description = "EC2 instance ID of the private Linux endpoint."
+  value       = aws_instance.linux_endpoint.id
+}
+
+output "linux_endpoint_private_ip" {
+  description = "Private IPv4 address assigned to the Linux endpoint."
+  value       = aws_instance.linux_endpoint.private_ip
+}
+
+output "linux_endpoint_public_ip" {
+  description = "Public IPv4 address of the Linux endpoint. Expected to be empty."
+  value       = aws_instance.linux_endpoint.public_ip
+}
+
+output "linux_endpoint_security_group_id" {
+  description = "Security group assigned to the Linux endpoint."
+  value       = aws_security_group.linux_endpoint.id
+}
+
+output "ubuntu_2404_ami_id" {
+  description = "Ubuntu 24.04 LTS AMI selected through AWS Parameter Store."
+  value       = data.aws_ssm_parameter.ubuntu_2404_ami.value
+}
