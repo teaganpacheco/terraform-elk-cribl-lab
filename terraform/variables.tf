@@ -51,3 +51,15 @@ variable "nat_private_ip" {
   type        = string
   default     = "10.10.10.10"
 }
+
+variable "linux_endpoint_instance_type" {
+  description = "EC2 instance type used by the Linux endpoint."
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "linux_endpoint_private_ip" {
+  description = "Static private IPv4 address assigned to the Linux endpoint."
+  type        = string
+  default     = "10.10.20.10"
+}

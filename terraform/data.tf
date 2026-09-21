@@ -14,3 +14,14 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
+# -----------------------------------------------------------------------------
+# Ubuntu Server 24.04 LTS
+#
+# Canonical publishes a public SSM parameter that points to the current stable
+# Ubuntu 24.04 LTS amd64 GP3-backed AMI in the selected AWS region.
+# -----------------------------------------------------------------------------
+
+data "aws_ssm_parameter" "ubuntu_2404_ami" {
+  name = "/aws/service/canonical/ubuntu/server/noble/stable/current/amd64/hvm/ebs-gp3/ami-id"
+}
