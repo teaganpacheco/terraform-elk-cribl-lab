@@ -104,3 +104,76 @@ output "ubuntu_2404_ami_id" {
   description = "Ubuntu 24.04 LTS AMI selected through AWS Parameter Store."
   value       = data.aws_ssm_parameter.ubuntu_2404_ami.insecure_value
 }
+
+# -----------------------------------------------------------------------------
+# Phase 1B Compute Outputs
+# -----------------------------------------------------------------------------
+
+output "windows_endpoint_instance_id" {
+  description = "EC2 instance ID of the Windows endpoint."
+  value       = aws_instance.windows_endpoint.id
+}
+
+output "windows_endpoint_private_ip" {
+  description = "Private IPv4 address assigned to the Windows endpoint."
+  value       = aws_instance.windows_endpoint.private_ip
+}
+
+output "windows_endpoint_public_ip" {
+  description = "Public IPv4 address of the Windows endpoint. Expected to be empty."
+  value       = aws_instance.windows_endpoint.public_ip
+}
+
+
+output "cribl_stream_instance_id" {
+  description = "EC2 instance ID of the Cribl Stream server."
+  value       = aws_instance.cribl_stream.id
+}
+
+output "cribl_stream_private_ip" {
+  description = "Private IPv4 address assigned to the Cribl Stream server."
+  value       = aws_instance.cribl_stream.private_ip
+}
+
+output "cribl_stream_public_ip" {
+  description = "Public IPv4 address of the Cribl Stream server. Expected to be empty."
+  value       = aws_instance.cribl_stream.public_ip
+}
+
+
+output "elastic_instance_id" {
+  description = "EC2 instance ID of the Elastic/Kibana server."
+  value       = aws_instance.elastic.id
+}
+
+output "elastic_private_ip" {
+  description = "Private IPv4 address assigned to the Elastic/Kibana server."
+  value       = aws_instance.elastic.private_ip
+}
+
+output "elastic_public_ip" {
+  description = "Public IPv4 address of the Elastic/Kibana server. Expected to be empty."
+  value       = aws_instance.elastic.public_ip
+}
+
+
+output "phase_1b_compute" {
+  description = "Summary of Phase 1B workload instances."
+
+  value = {
+    windows_endpoint = {
+      instance_id = aws_instance.windows_endpoint.id
+      private_ip  = aws_instance.windows_endpoint.private_ip
+    }
+
+    cribl_stream = {
+      instance_id = aws_instance.cribl_stream.id
+      private_ip  = aws_instance.cribl_stream.private_ip
+    }
+
+    elastic = {
+      instance_id = aws_instance.elastic.id
+      private_ip  = aws_instance.elastic.private_ip
+    }
+  }
+}
