@@ -124,3 +124,115 @@ resource "aws_vpc_security_group_egress_rule" "linux_endpoint_https" {
   from_port   = 443
   to_port     = 443
 }
+
+# -----------------------------------------------------------------------------
+# Windows Endpoint Security Group
+# -----------------------------------------------------------------------------
+
+resource "aws_security_group" "windows_endpoint" {
+  name        = "${local.name_prefix}-windows-endpoint-sg"
+  description = "Security group for the private Windows endpoint"
+  vpc_id      = aws_vpc.main.id
+
+  revoke_rules_on_delete = true
+
+  tags = {
+    Name = "${local.name_prefix}-windows-endpoint-sg"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "windows_endpoint_http" {
+  security_group_id = aws_security_group.windows_endpoint.id
+
+  description = "Allow outbound HTTP through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 80
+  to_port     = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "windows_endpoint_https" {
+  security_group_id = aws_security_group.windows_endpoint.id
+
+  description = "Allow outbound HTTPS through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 443
+  to_port     = 443
+}
+
+# -----------------------------------------------------------------------------
+# Cribl Stream Security Group
+#
+# Application ingress will be added during Phase 3.
+# -----------------------------------------------------------------------------
+
+resource "aws_security_group" "cribl_stream" {
+  name        = "${local.name_prefix}-cribl-stream-sg"
+  description = "Security group for the private Cribl Stream server"
+  vpc_id      = aws_vpc.main.id
+
+  revoke_rules_on_delete = true
+
+  tags = {
+    Name = "${local.name_prefix}-cribl-stream-sg"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "cribl_stream_http" {
+  security_group_id = aws_security_group.cribl_stream.id
+
+  description = "Allow outbound HTTP through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 80
+  to_port     = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "cribl_stream_https" {
+  security_group_id = aws_security_group.cribl_stream.id
+
+  description = "Allow outbound HTTPS through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 443
+  to_port     = 443
+}
+
+# -----------------------------------------------------------------------------
+# Elastic / Kibana Security Group
+#
+# Elasticsearch and Kibana ingress will be added during Phase 4.
+# -----------------------------------------------------------------------------
+
+resource "aws_security_group" "elastic" {
+  name        = "${local.name_prefix}-elastic-sg"
+  description = "Security group for the private Elastic/Kibana server"
+  vpc_id      = aws_vpc.main.id
+
+  revoke_rules_on_delete = true
+
+  tags = {
+    Name = "${local.name_prefix}-elastic-sg"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "elastic_http" {
+  security_group_id = aws_security_group.elastic.id
+
+  description = "Allow outbound HTTP through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 80
+  to_port     = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "elastic_https" {
+  security_group_id = aws_security_group.elastic.id
+
+  description = "Allow outbound HTTPS through NAT"
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port   = 443
+  to_port     = 443
+}

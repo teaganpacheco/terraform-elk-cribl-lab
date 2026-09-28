@@ -63,3 +63,54 @@ variable "linux_endpoint_private_ip" {
   type        = string
   default     = "10.10.20.10"
 }
+
+# -----------------------------------------------------------------------------
+# Windows Endpoint
+# -----------------------------------------------------------------------------
+
+variable "windows_endpoint_instance_type" {
+  description = "EC2 instance type used by the Windows endpoint."
+  type        = string
+  default     = "t3.medium"
+}
+
+variable "windows_endpoint_private_ip" {
+  description = "Static private IPv4 address assigned to the Windows endpoint."
+  type        = string
+  default     = "10.10.20.20"
+}
+
+# -----------------------------------------------------------------------------
+# Cribl Stream
+# -----------------------------------------------------------------------------
+
+variable "cribl_stream_instance_type" {
+  description = "EC2 instance type used by the Cribl Stream server."
+  type        = string
+
+  # Lab-sized instance. See documentation regarding Cribl production/minimum
+  # sizing before Phase 3.
+  default = "t3.large"
+}
+
+variable "cribl_stream_private_ip" {
+  description = "Static private IPv4 address assigned to Cribl Stream."
+  type        = string
+  default     = "10.10.20.30"
+}
+
+# -----------------------------------------------------------------------------
+# Elastic / Kibana
+# -----------------------------------------------------------------------------
+
+variable "elastic_instance_type" {
+  description = "EC2 instance type used by the Elastic/Kibana server."
+  type        = string
+  default     = "t3.large"
+}
+
+variable "elastic_private_ip" {
+  description = "Static private IPv4 address assigned to Elastic/Kibana."
+  type        = string
+  default     = "10.10.20.40"
+}

@@ -25,3 +25,14 @@ data "aws_availability_zones" "available" {
 data "aws_ssm_parameter" "ubuntu_2404_ami" {
   name = "/aws/service/canonical/ubuntu/server/noble/stable/current/amd64/hvm/ebs-gp3/ami-id"
 }
+
+# -----------------------------------------------------------------------------
+# Windows Server 2022
+#
+# AWS maintains a public Systems Manager parameter that resolves to the
+# current Windows Server 2022 English Full Base AMI.
+# -----------------------------------------------------------------------------
+
+data "aws_ssm_parameter" "windows_2022_ami" {
+  name = "/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-Base"
+}
