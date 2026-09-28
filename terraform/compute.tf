@@ -8,7 +8,7 @@
 # -----------------------------------------------------------------------------
 
 resource "aws_instance" "linux_endpoint" {
-  ami           = data.aws_ssm_parameter.ubuntu_2404_ami.value
+  ami           = data.aws_ssm_parameter.ubuntu_2404_ami.insecure_value
   instance_type = var.linux_endpoint_instance_type
 
   subnet_id  = aws_subnet.private.id

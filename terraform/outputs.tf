@@ -102,5 +102,5 @@ output "linux_endpoint_security_group_id" {
 
 output "ubuntu_2404_ami_id" {
   description = "Ubuntu 24.04 LTS AMI selected through AWS Parameter Store."
-  value       = data.aws_ssm_parameter.ubuntu_2404_ami.value
+  value       = data.aws_ssm_parameter.ubuntu_2404_ami.insecure_value
 }
