@@ -73,7 +73,7 @@ resource "aws_instance" "windows_endpoint" {
   ami           = data.aws_ssm_parameter.windows_2022_ami.insecure_value
   instance_type = var.windows_endpoint_instance_type
 
-  subnet_id = aws_subnet.private.id
+  subnet_id  = aws_subnet.private.id
   private_ip = var.windows_endpoint_private_ip
 
   associate_public_ip_address = false
@@ -130,7 +130,7 @@ resource "aws_instance" "cribl_stream" {
   ami           = data.aws_ssm_parameter.ubuntu_2404_ami.insecure_value
   instance_type = var.cribl_stream_instance_type
 
-  subnet_id = aws_subnet.private.id
+  subnet_id  = aws_subnet.private.id
   private_ip = var.cribl_stream_private_ip
 
   associate_public_ip_address = false
@@ -187,7 +187,7 @@ resource "aws_instance" "elastic" {
   ami           = data.aws_ssm_parameter.ubuntu_2404_ami.insecure_value
   instance_type = var.elastic_instance_type
 
-  subnet_id = aws_subnet.private.id
+  subnet_id  = aws_subnet.private.id
   private_ip = var.elastic_private_ip
 
   associate_public_ip_address = false
