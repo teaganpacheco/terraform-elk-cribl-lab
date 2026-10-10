@@ -55,7 +55,7 @@ variable "nat_private_ip" {
 variable "linux_endpoint_instance_type" {
   description = "EC2 instance type used by the Linux endpoint."
   type        = string
-  default     = "t3.micro"
+  default     = "t3.small"
 }
 
 variable "linux_endpoint_private_ip" {
